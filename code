@@ -1,0 +1,20 @@
+//@version=5
+strategy("EMA Strategy", overlay=true)
+
+// 定义EMA指标参数
+emaShortLength = input(9, title="EMA Short Length")
+emaLongLength = input(21, title="EMA Long Length")
+
+// 计算EMA指标
+emaShort = ta.ema(close, emaShortLength)
+emaLong = ta.ema(close, emaLongLength)
+
+// 定义交易信号
+enterLong = ta.crossover(emaShort, emaLong)
+exitLong = ta.crossunder(emaShort, emaLong)
+
+// 执行交易信号
+if enterLong
+    strategy.entry("Long", strategy.long)
+if exitLong
+    strategy.close("Long")
